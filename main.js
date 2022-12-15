@@ -12,20 +12,13 @@ keys.addEventListener('click',e =>{
         const previousKeyType = calculator.dataset.previousKeyType
 
         const calculate = (n1, operator, n2) => {
-            let result = ''
-            
-            if (operator === 'add') {
-              result = parseFloat(n1) + parseFloat(n2)
-            } else if (operator === 'subtract') {
-              result = parseFloat(n1) - parseFloat(n2)
-            } else if (operator === 'multiply') {
-              result = parseFloat(n1) * parseFloat(n2)
-            } else if (operator === 'divide') {
-              result = parseFloat(n1) / parseFloat(n2)
-            }
-            
-            return result
-          }
+          const firstNum = parseFloat(n1)
+          const secondNum = parseFloat(n2)
+          if (operator === 'add') return firstNum + secondNum
+          if (operator === 'subtract') return firstNum - secondNum
+          if (operator === 'multiply') return firstNum * secondNum
+          if (operator === 'divide') return firstNum / secondNum
+        }
 
         
         Array.from(key.parentNode.children)
@@ -71,11 +64,12 @@ keys.addEventListener('click',e =>{
                 const secondValue = displayedNum
                 
                 // Note: It's sufficient to check for firstValue and operator because secondValue always exists
-                if (firstValue && operator && previousKeyType !== 'operator') {
-                    display.textContent = calculate(firstValue, operator, secondValue)
-                    display.textContent = calcValue
+                if (firstValue && operator && previousKeyType !== 'operator' && previousKeyType !== 'calculate') {
+                  const calcValue = calculate(firstValue, operator, secondValue)
+                  display.textContent = calcValue
+                  calculator.dataset.firstValue = calcValue
                     // updtaing the new result value to first value
-                    calculator.dataset.firstValue = calcValue
+          
                 }
                 else{
                     calculator.dataset.firstValue = displayedNum
@@ -110,19 +104,19 @@ keys.addEventListener('click',e =>{
 
 
         //   clearing the screen and set all values to zeros
-          if (action === 'clear') {
-            if (key.textContent === 'AC') {
-              calculator.dataset.firstValue = ''
-              calculator.dataset.modValue = ''
-              calculator.dataset.operator = ''
-              calculator.dataset.previousKeyType = ''
-            } else {
-              key.textContent = 'AC'
-            }
-            
-            display.textContent = 0
-            calculator.dataset.previousKeyType = 'clear'
+        if (action === 'clear') {
+          if (key.textContent === 'AC') {
+            calculator.dataset.firstValue = ''
+            calculator.dataset.modValue = ''
+            calculator.dataset.operator = ''
+            calculator.dataset.previousKeyType = ''
+          } else {
+            key.textContent = 'AC'
           }
+          
+        display.textContent = 0
+          calculator.dataset.previousKeyType = 'clear'
+        }
 
 
         
